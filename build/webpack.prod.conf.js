@@ -105,13 +105,17 @@ const webpackConfig = merge(baseWebpackConfig, {
     // This instance extracts shared chunks from code splitted chunks and bundles them
     // in a separate chunk, similar to the vendor chunk
     // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'app',
-      async: 'vendor-async',
-      children: true,
-      minChunks: 3
-    }),
-
+//     new webpack.optimize.CommonsChunkPlugin({
+//       name: 'app',
+//       async: 'vendor-async',
+//       children: true,
+//       minChunks: 3
+//     }),
+        new webpack.optimize.CommonsChunkPlugin({
+    minChunks: module => module.context && module.context.indexOf("node_modules") !== -1,
+    name: "vendor",
+    chunks: ["main"]
+})
     // copy custom static assets
     new CopyWebpackPlugin([
       {
